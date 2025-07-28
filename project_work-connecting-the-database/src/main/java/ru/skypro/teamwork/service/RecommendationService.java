@@ -21,8 +21,8 @@ public class RecommendationService {
 
     public RecommendationListDto getRecommendations(UUID userId) {
         List<RecommendationDto> recommendations = ruleSets.stream()
-                .map(ruleSet -> ruleSet.applyRule(userId))   // Optional<RecommendationDto>
-                .flatMap(Optional::stream)               // фильтруем пустые
+                .map(ruleSet -> ruleSet.applyRule(userId))
+                .flatMap(Optional::stream)
                 .collect(Collectors.toList());
 
         return new RecommendationListDto(userId, recommendations);
