@@ -4,6 +4,6 @@ import ru.skypro.teamwork.dto.RecommendationDto;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RecommendationRuleSet {
+public interface RecommendationRuleSetService {
     Optional<RecommendationDto> applyRule(UUID userId);
 }

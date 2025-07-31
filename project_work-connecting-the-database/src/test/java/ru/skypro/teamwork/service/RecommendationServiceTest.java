@@ -1,47 +1,40 @@
 package ru.skypro.teamwork.service;
 
-import org.h2.command.dml.MergeUsing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skypro.teamwork.dto.RecommendationDto;
 import ru.skypro.teamwork.dto.RecommendationListDto;
-import ru.skypro.teamwork.service.ruleset.RecommendationRuleSet;
+import ru.skypro.teamwork.service.ruleset.RecommendationRuleSetService;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class) //одключение Mockito
+@ExtendWith(MockitoExtension.class)
 
 public class RecommendationServiceTest {
 
-    //mock-объекты для зависимостей
     @Mock
-    private RecommendationRuleSet ruleSet1;
+    private RecommendationRuleSetService ruleSet1;
     @Mock
-    private RecommendationRuleSet ruleSet2;
+    private RecommendationRuleSetService ruleSet2;
 
     private RecommendationService recommendationService;
 
 
     @BeforeEach
     void setUp() {
-        //создание списка mock-ов и внедрение его в сервис
 
         recommendationService = new RecommendationService(List.of(ruleSet1, ruleSet2));
     }
 
     @Test
-    //Поведение сервиса, когда ни одно из правил не возвращает рекомендаций.
     void getRecommendations_ShouldReturnEmptyList_WhenNoRulesMatch() {
         UUID userId = UUID.randomUUID(); // Создаем случайный ID пользователя для теста
 
@@ -58,7 +51,6 @@ public class RecommendationServiceTest {
     }
 
     @Test
-    //Корректность работы сервиса, когда правила возвращают рекомендации.
     void getRecommendations_ShouldReturnRecommendations_WhenRulesMatch() {
         UUID userId = UUID.randomUUID(); // подготовка тестовых данных
         UUID productId1 = UUID.randomUUID();
@@ -88,7 +80,6 @@ public class RecommendationServiceTest {
     }
 
     @Test
-    //Проверка фильтрации пустых рекомендаций, когда некоторые правила не срабатывают.
     void getRecommendations_ShouldFilterEmptyRecommendations() {
         UUID userId = UUID.randomUUID();
         UUID productId = UUID.randomUUID();
@@ -108,7 +99,6 @@ public class RecommendationServiceTest {
     }
 
     @Test
-    //Поведение сервиса при отсутствии правил (пустой список ruleSets).
     void getRecommendations_ShouldHandleEmptyRuleSets() {
         RecommendationService emptyService = new RecommendationService(Collections.emptyList());
         UUID userId = UUID.randomUUID();

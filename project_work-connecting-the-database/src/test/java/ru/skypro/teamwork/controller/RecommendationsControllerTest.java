@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RecommendationsControllerTest {
 
-    // MockMvc - основной инструмент для тестирования Spring MVC контроллеров
     private MockMvc mockMvc;
 
     @Mock
@@ -35,12 +34,11 @@ public class RecommendationsControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        //recommendationsController = new RecommendationsController(recommendationService);
+
         mockMvc = MockMvcBuilders.standaloneSetup(recommendationsController).build();
     }
 
     @Test
-    //Проверяет, что endpoint возвращает статус 200 OK при валидном запросе.
     void getRecommendations_ShouldReturnRecommendationsList_WhenValidRequest() throws Exception {
         UUID userId = UUID.randomUUID();
         RecommendationDto dto1 = new RecommendationDto(
@@ -64,7 +62,6 @@ public class RecommendationsControllerTest {
     }
 
     @Test
-    //Сервер возвращает статус 200 OK (а не ошибку), даже если рекомендаций нет.
     void getRecommendations_ShouldReturnEmptyList_WhenNoRecommendations() throws Exception {
         UUID userId = UUID.randomUUID();
 
@@ -77,10 +74,6 @@ public class RecommendationsControllerTest {
     }
 
     @Test
-    //API возвращает статус 400 Bad Request, если передан:
-    // - не-UUID строка
-    // - пустой ID
-    // - случайные символы
     void getRecommendations_ShouldReturn400_WhenInvalidUserIdFormat() throws Exception {
         mockMvc.perform(get("/recommendation/{userId}", "invalid-uuid-format"))
                 .andExpect(status().isBadRequest());

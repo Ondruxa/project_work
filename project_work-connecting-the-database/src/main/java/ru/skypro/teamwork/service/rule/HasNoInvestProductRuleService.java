@@ -5,10 +5,10 @@ import ru.skypro.teamwork.repository.RecommendationsRepository;
 import java.util.UUID;
 
 @Component
-public class HasNoInvestProductRule implements Rule {
+public class HasNoInvestProductRuleService implements RuleService {
     private final RecommendationsRepository repository;
 
-    public HasNoInvestProductRule(RecommendationsRepository repository) {
+    public HasNoInvestProductRuleService(RecommendationsRepository repository) {
         this.repository = repository;
     }
 
