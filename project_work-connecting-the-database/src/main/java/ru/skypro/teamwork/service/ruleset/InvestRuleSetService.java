@@ -2,24 +2,24 @@ package ru.skypro.teamwork.service.ruleset;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.teamwork.dto.RecommendationDto;
-import ru.skypro.teamwork.service.rule.HasDebitProductRule;
-import ru.skypro.teamwork.service.rule.HasNoInvestProductRule;
-import ru.skypro.teamwork.service.rule.SavingTopUpOverThousandRule;
-import ru.skypro.teamwork.service.rule.Rule;
+import ru.skypro.teamwork.service.rule.HasDebitProductRuleService;
+import ru.skypro.teamwork.service.rule.HasNoInvestProductRuleService;
+import ru.skypro.teamwork.service.rule.SavingTopUpOverThousandRuleService;
+import ru.skypro.teamwork.service.rule.RuleService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class InvestRuleSet implements RecommendationRuleSet {
-    private final List<Rule> rules;
+public class InvestRuleSetService implements RecommendationRuleSetService {
+    private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
 
-    public InvestRuleSet(
-            HasDebitProductRule debitRule,
-            HasNoInvestProductRule noInvestRule,
-            SavingTopUpOverThousandRule savingRule
+    public InvestRuleSetService(
+            HasDebitProductRuleService debitRule,
+            HasNoInvestProductRuleService noInvestRule,
+            SavingTopUpOverThousandRuleService savingRule
     ) {
         this.rules = List.of(debitRule, noInvestRule, savingRule);
     }

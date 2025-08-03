@@ -1,19 +1,18 @@
 package ru.skypro.teamwork.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.UUID;
 
+@Getter
+@AllArgsConstructor
 public class RecommendationDto {
     private final UUID productId;
     private final String title;
     private final String description;
 
-    public RecommendationDto(UUID productId, String title, String description) {
-        this.productId = productId;
-        this.title = title;
-        this.description = description;
-    }
-
-    public UUID getProductId() {
+public UUID getProductId() {
         return productId;
     }
 

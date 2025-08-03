@@ -2,7 +2,7 @@ package ru.skypro.teamwork.service;
 
 import ru.skypro.teamwork.dto.RecommendationDto;
 import ru.skypro.teamwork.dto.RecommendationListDto;
-import ru.skypro.teamwork.service.ruleset.RecommendationRuleSet;
+import ru.skypro.teamwork.service.ruleset.RecommendationRuleSetService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Service
 public class RecommendationService {
 
-    private final List<RecommendationRuleSet> ruleSets;
+    private final List<RecommendationRuleSetService> ruleSets;
 
-    public RecommendationService(List<RecommendationRuleSet> ruleSets) {
+    public RecommendationService(List<RecommendationRuleSetService> ruleSets) {
         this.ruleSets = ruleSets;
     }
 
