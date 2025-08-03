@@ -13,11 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class SimpleCreditRuleSet implements RecommendationRuleSetService {
+public class SimpleCreditRuleSetService implements RecommendationRuleSetService {
     private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
 
-    public SimpleCreditRuleSet(
+    public SimpleCreditRuleSetService(
             HasNoCreditProductRuleService noCreditRule,
             DebitTopUpGreaterThanSpendRuleService debitTopUpGreaterThanSpendRule,
             DebitSpendOverHundredThousandRuleService debitSpendOverHundredThousandRule

@@ -13,11 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class TopSavingRuleSet implements RecommendationRuleSetService {
+public class TopSavingRuleSetService implements RecommendationRuleSetService {
     private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
 
-    public TopSavingRuleSet(
+    public TopSavingRuleSetService(
             HasDebitProductRuleService debitRule,
             TopUpOverFiftyThousandRuleService topUpOverFiftyThousandRule,
             DebitTopUpGreaterThanSpendRuleService debitTopUpGreaterThanSpendRule
