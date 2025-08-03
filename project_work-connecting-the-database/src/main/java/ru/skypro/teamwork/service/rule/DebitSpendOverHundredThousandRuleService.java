@@ -5,15 +5,15 @@ import ru.skypro.teamwork.repository.RecommendationsRepository;
 import java.util.UUID;
 
 @Component
-public class HasNoCreditProductRule implements Rule {
+public class DebitSpendOverHundredThousandRuleService implements RuleService {
     private final RecommendationsRepository repository;
 
-    public HasNoCreditProductRule(RecommendationsRepository repository) {
+    public DebitSpendOverHundredThousandRuleService(RecommendationsRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public boolean applyRule(UUID userId) {
-        return repository.userHasNoCreditProduct(userId);
+        return repository.debitSpendOverHundredThousand(userId);
     }
 }

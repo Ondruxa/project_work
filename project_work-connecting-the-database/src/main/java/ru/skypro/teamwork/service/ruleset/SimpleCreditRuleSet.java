@@ -2,10 +2,10 @@ package ru.skypro.teamwork.service.ruleset;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.teamwork.dto.RecommendationDto;
-import ru.skypro.teamwork.service.rule.DebitSpendOverHundredThousandRule;
-import ru.skypro.teamwork.service.rule.DebitTopUpGreaterThanSpendRule;
-import ru.skypro.teamwork.service.rule.HasNoCreditProductRule;
-import ru.skypro.teamwork.service.rule.Rule;
+import ru.skypro.teamwork.service.rule.DebitSpendOverHundredThousandRuleService;
+import ru.skypro.teamwork.service.rule.DebitTopUpGreaterThanSpendRuleService;
+import ru.skypro.teamwork.service.rule.HasNoCreditProductRuleService;
+import ru.skypro.teamwork.service.rule.RuleService;
 
 
 import java.util.List;
@@ -13,14 +13,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class SimpleCreditRuleSet implements RecommendationRuleSet {
-    private final List<Rule> rules;
+public class SimpleCreditRuleSet implements RecommendationRuleSetService {
+    private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
 
     public SimpleCreditRuleSet(
-            HasNoCreditProductRule noCreditRule,
-            DebitTopUpGreaterThanSpendRule debitTopUpGreaterThanSpendRule,
-            DebitSpendOverHundredThousandRule debitSpendOverHundredThousandRule
+            HasNoCreditProductRuleService noCreditRule,
+            DebitTopUpGreaterThanSpendRuleService debitTopUpGreaterThanSpendRule,
+            DebitSpendOverHundredThousandRuleService debitSpendOverHundredThousandRule
     ) {
         this.rules = List.of(noCreditRule, debitTopUpGreaterThanSpendRule, debitSpendOverHundredThousandRule);
     }

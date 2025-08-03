@@ -5,10 +5,10 @@ import ru.skypro.teamwork.repository.RecommendationsRepository;
 import java.util.UUID;
 
 @Component
-public class TopUpOverFiftyThousandRule implements Rule {
+public class TopUpOverFiftyThousandRuleService implements RuleService {
     private final RecommendationsRepository repository;
 
-    public TopUpOverFiftyThousandRule(RecommendationsRepository repository) {
+    public TopUpOverFiftyThousandRuleService(RecommendationsRepository repository) {
         this.repository = repository;
     }
 

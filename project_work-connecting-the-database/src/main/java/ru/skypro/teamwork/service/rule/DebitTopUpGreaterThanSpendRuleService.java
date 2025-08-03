@@ -5,10 +5,10 @@ import ru.skypro.teamwork.repository.RecommendationsRepository;
 import java.util.UUID;
 
 @Component
-public class DebitTopUpGreaterThanSpendRule implements Rule {
+public class DebitTopUpGreaterThanSpendRuleService implements RuleService {
     private final RecommendationsRepository repository;
 
-    public DebitTopUpGreaterThanSpendRule(RecommendationsRepository repository) {
+    public DebitTopUpGreaterThanSpendRuleService(RecommendationsRepository repository) {
         this.repository = repository;
     }
 
