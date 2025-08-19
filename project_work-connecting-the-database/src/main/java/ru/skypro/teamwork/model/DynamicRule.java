@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Table(name = "dynamic_rules")
@@ -24,6 +25,6 @@ public class DynamicRule {
     @Column(name = "product_text", length = 2000)
     private String productText;
 
-    @Column(name = "rule", columnDefinition = "TEXT", nullable = false)
-    private String rule;
+    @OneToMany(mappedBy = "dynamicRule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RuleCondition> rule;
 }

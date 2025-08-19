@@ -1,18 +1,20 @@
 package ru.skypro.teamwork.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.teamwork.dto.DynamicRuleDto;
 import ru.skypro.teamwork.dto.DynamicRuleListResponse;
 import ru.skypro.teamwork.dto.DynamicRuleRequest;
+import ru.skypro.teamwork.dto.RuleConditionDto;
 import ru.skypro.teamwork.model.DynamicRule;
+import ru.skypro.teamwork.model.RuleCondition;
+import ru.skypro.teamwork.model.RuleConditionArgument;
 import ru.skypro.teamwork.repository.DynamicRuleRepository;
 import ru.skypro.teamwork.service.DynamicRuleService;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,57 +22,86 @@ import java.util.stream.Collectors;
 public class DynamicRuleServiceImpl implements DynamicRuleService {
 
     private final DynamicRuleRepository repository;
-    private final ObjectMapper objectMapper;
 
     @Override
+    @Transactional
     public DynamicRuleDto createRule(DynamicRuleRequest request) {
-        try {
-            String ruleJson = objectMapper.writeValueAsString(request.getRule());
-            DynamicRule entity = new DynamicRule(
-                    null,
-                    request.getProductName(),
-                    request.getProductId(),
-                    request.getProductText(),
-                    ruleJson
-            );
-            DynamicRule saved = repository.save(entity);
-            DynamicRuleDto dto = new DynamicRuleDto();
-            dto.setId(saved.getId());
-            dto.setProductName(saved.getProductName());
-            dto.setProductId(saved.getProductId());
-            dto.setProductText(saved.getProductText());
-            dto.setRule(request.getRule());
-            return dto;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка сериализации правила", e);
-        }
-    }
+        DynamicRule entity = new DynamicRule();
+        entity.setProductName(request.getProductName());
+        entity.setProductId(request.getProductId());
+        entity.setProductText(request.getProductText());
 
-    @Override
-    public DynamicRuleListResponse getAllRules() {
-        List<DynamicRuleDto> rules = repository.findAll().stream().map(entity -> {
-            DynamicRuleDto dto = new DynamicRuleDto();
-            dto.setId(entity.getId());
-            dto.setProductName(entity.getProductName());
-            dto.setProductId(entity.getProductId());
-            dto.setProductText(entity.getProductText());
-            try {
-                dto.setRule(objectMapper.readValue(entity.getRule(), List.class));
-            } catch (JsonProcessingException e) {
-                dto.setRule(null);
+        List<RuleCondition> conditions = new ArrayList<>();
+        if (request.getRule() != null) {
+            for (RuleConditionDto dto : request.getRule()) {
+                RuleCondition condition = new RuleCondition();
+                condition.setQuery(dto.getQuery());
+                condition.setNegate(dto.isNegate());
+                condition.setDynamicRule(entity);
+
+                List<RuleConditionArgument> argumentEntities = new ArrayList<>();
+                if (dto.getArguments() != null) {
+                    for (String arg : dto.getArguments()) {
+                        RuleConditionArgument argument = new RuleConditionArgument();
+                        argument.setArgument(arg);
+                        argument.setRuleCondition(condition);
+                        argumentEntities.add(argument);
+                    }
+                }
+                condition.setArguments(argumentEntities);
+
+                conditions.add(condition);
             }
-            return dto;
-        }).collect(Collectors.toList());
-        DynamicRuleListResponse response = new DynamicRuleListResponse();
-        response.setData(rules);
-        return response;
+        }
+        entity.setRule(conditions);
+
+        DynamicRule saved = repository.save(entity);
+        return toDto(saved);
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public DynamicRuleListResponse getAllRules() {
+        List<DynamicRuleDto> data = repository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+        DynamicRuleListResponse resp = new DynamicRuleListResponse();
+        resp.setData(data);
+        return resp;
+    }
+
+    @Override
+    @Transactional
     public void deleteRuleByProductId(String productId) {
-        repository.findAll().stream()
-                .filter(rule -> rule.getProductId().equals(productId))
-                .findFirst()
-                .ifPresent(rule -> repository.deleteById(rule.getId()));
+        repository.deleteByProductId(productId);
+    }
+
+    private DynamicRuleDto toDto(DynamicRule entity) {
+        DynamicRuleDto dto = new DynamicRuleDto();
+        dto.setId(entity.getId());
+        dto.setProductName(entity.getProductName());
+        dto.setProductId(entity.getProductId());
+        dto.setProductText(entity.getProductText());
+
+        List<RuleConditionDto> ruleDtos = new ArrayList<>();
+        if (entity.getRule() != null) {
+            for (RuleCondition condition : entity.getRule()) {
+                RuleConditionDto c = new RuleConditionDto();
+                c.setQuery(condition.getQuery());
+
+                if (condition.getArguments() != null) {
+                    List<String> args = condition.getArguments().stream()
+                            .map(RuleConditionArgument::getArgument)
+                            .collect(Collectors.toList());
+                    c.setArguments(args);
+                } else {
+                    c.setArguments(new ArrayList<>());
+                }
+                c.setNegate(condition.isNegate());
+                ruleDtos.add(c);
+            }
+        }
+        dto.setRule(ruleDtos);
+        return dto;
     }
 }
