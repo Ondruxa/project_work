@@ -116,4 +116,37 @@ public class RecommendationsRepository {
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userId);
         return result != null && result > 100_000;
     }
+
+    public boolean userHasProductType(UUID userId, String productType) {
+        String sql = """
+            SELECT COUNT(*) > 0
+            FROM transactions t
+            JOIN products p ON t.product_id = p.id
+            WHERE t.user_id = ? AND p.type = ?
+        """;
+        Boolean result = jdbcTemplate.queryForObject(sql, Boolean.class, userId, productType);
+        return Boolean.TRUE.equals(result);
+    }
+
+    public boolean userHasActiveProductType(UUID userId, String productType, int minTransactions) {
+        String sql = """
+            SELECT COUNT(*) >= ?
+            FROM transactions t
+            JOIN products p ON t.product_id = p.id
+            WHERE t.user_id = ? AND p.type = ?
+        """;
+        Boolean result = jdbcTemplate.queryForObject(sql, Boolean.class, minTransactions, userId, productType);
+        return Boolean.TRUE.equals(result);
+    }
+
+    public int getTransactionSum(UUID userId, String productType, String transactionType) {
+        String sql = """
+            SELECT COALESCE(SUM(t.amount), 0)
+            FROM transactions t
+            JOIN products p ON t.product_id = p.id
+            WHERE t.user_id = ? AND p.type = ? AND t.type = ?
+        """;
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userId, productType, transactionType);
+        return result != null ? result : 0;
+    }
 }
