@@ -1,11 +1,14 @@
 package ru.skypro.teamwork.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 public class DynamicRuleDto {
     private UUID id;
 
