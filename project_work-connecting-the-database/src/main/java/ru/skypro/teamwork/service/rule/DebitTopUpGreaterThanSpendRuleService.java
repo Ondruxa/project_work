@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Component
 public class DebitTopUpGreaterThanSpendRuleService implements RuleService {
+
     private static final Logger logger = LoggerFactory.getLogger(DebitTopUpGreaterThanSpendRuleService.class);
     private final RecommendationsRepository repository;
 

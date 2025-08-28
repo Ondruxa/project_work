@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class DynamicRuleDto {
+
     private UUID id;
 
     @JsonProperty("product_name")

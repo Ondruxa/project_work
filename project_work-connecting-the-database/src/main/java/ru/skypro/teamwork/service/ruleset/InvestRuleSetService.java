@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Component
 public class InvestRuleSetService implements RecommendationRuleSetService {
+
     private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
 

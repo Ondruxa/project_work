@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class RuleConditionDto {
+
     private String query;
     private List<String> arguments;
     private boolean negate;

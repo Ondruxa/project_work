@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Component
 public class HasDebitProductRuleService implements RuleService {
+
     private final RecommendationsRepository repository;
 
     public HasDebitProductRuleService(RecommendationsRepository repository) {

@@ -7,13 +7,13 @@ import ru.skypro.teamwork.service.rule.HasDebitProductRuleService;
 import ru.skypro.teamwork.service.rule.TopUpOverFiftyThousandRuleService;
 import ru.skypro.teamwork.service.rule.RuleService;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class TopSavingRuleSetService implements RecommendationRuleSetService {
+
     private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
 

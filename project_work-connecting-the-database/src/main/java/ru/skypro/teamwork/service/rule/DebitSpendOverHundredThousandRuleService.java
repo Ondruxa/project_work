@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Component
 public class DebitSpendOverHundredThousandRuleService implements RuleService {
-    private static final Logger logger = LoggerFactory.getLogger(DebitSpendOverHundredThousandRuleService.class);
 
+    private static final Logger logger = LoggerFactory.getLogger(DebitSpendOverHundredThousandRuleService.class);
     private final RecommendationsRepository repository;
 
     public DebitSpendOverHundredThousandRuleService(RecommendationsRepository repository) {

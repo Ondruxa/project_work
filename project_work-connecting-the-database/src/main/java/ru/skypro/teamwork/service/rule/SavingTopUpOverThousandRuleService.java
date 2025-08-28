@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Component
 public class SavingTopUpOverThousandRuleService implements RuleService {
+
     private final RecommendationsRepository repository;
 
     public SavingTopUpOverThousandRuleService(RecommendationsRepository repository) {

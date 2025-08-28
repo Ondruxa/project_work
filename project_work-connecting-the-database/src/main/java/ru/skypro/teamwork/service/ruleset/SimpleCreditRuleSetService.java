@@ -7,13 +7,13 @@ import ru.skypro.teamwork.service.rule.DebitTopUpGreaterThanSpendRuleService;
 import ru.skypro.teamwork.service.rule.HasNoCreditProductRuleService;
 import ru.skypro.teamwork.service.rule.RuleService;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
 public class SimpleCreditRuleSetService implements RecommendationRuleSetService {
+
     private final List<RuleService> rules;
     private final UUID productId = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
 

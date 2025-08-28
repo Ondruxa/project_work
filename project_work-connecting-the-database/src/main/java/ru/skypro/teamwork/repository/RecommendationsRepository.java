@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Repository
 public class RecommendationsRepository {
+
     private final JdbcTemplate jdbcTemplate;
 
     public RecommendationsRepository(@Qualifier("recommendationsJdbcTemplate") JdbcTemplate jdbcTemplate) {
