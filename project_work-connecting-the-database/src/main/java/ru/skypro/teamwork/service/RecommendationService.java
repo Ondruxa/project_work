@@ -22,15 +22,18 @@ public class RecommendationService {
     private final List<RecommendationRuleSetService> ruleSets;
     private final DynamicRuleRepository dynamicRuleRepository;
     private final RecommendationsRepository recommendationsRepository;
+    private final UserLookupService userLookupService;
 
     public RecommendationService(
             List<RecommendationRuleSetService> ruleSets,
             DynamicRuleRepository dynamicRuleRepository,
-            RecommendationsRepository recommendationsRepository
+            RecommendationsRepository recommendationsRepository,
+            UserLookupService userLookupService
     ) {
         this.ruleSets = ruleSets;
         this.dynamicRuleRepository = dynamicRuleRepository;
         this.recommendationsRepository = recommendationsRepository;
+        this.userLookupService = userLookupService;
     }
 
     public RecommendationListDto getRecommendations(UUID userId) {
@@ -56,7 +59,15 @@ public class RecommendationService {
             }
         }
 
-        return new RecommendationListDto(userId, recommendations);
+        var userInfo = userLookupService.findById(userId)
+                .orElse(new UserLookupService.UserInfo(userId, "", ""));
+
+        return new RecommendationListDto(
+                userId,
+                userInfo.firstName(),
+                userInfo.lastName(),
+                recommendations
+        );
     }
 
     private boolean checkCondition(UUID userId, RuleCondition condition) {
