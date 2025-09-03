@@ -6,6 +6,7 @@ import java.util.UUID;
 
 @Component
 public class HasNoInvestProductRuleService implements RuleService {
+
     private final RecommendationsRepository repository;
 
     public HasNoInvestProductRuleService(RecommendationsRepository repository) {

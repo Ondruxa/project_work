@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/scripts/changelog-create-dynamic-rules.sql
+  - include:
+        file: liquibase/scripts/changelog-002-dynamic-rules-normalize.sql
+  - include:
+      file: liquibase/scripts/changelog-003-create-rule-condition-arguments.sql
+  - include:
+        file: liquibase/scripts/changelog-004-delete-column-arguments.sql

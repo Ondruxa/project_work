@@ -2,10 +2,12 @@ package ru.skypro.teamwork.service.rule;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.teamwork.repository.RecommendationsRepository;
+
 import java.util.UUID;
 
 @Component
 public class TopUpOverFiftyThousandRuleService implements RuleService {
+
     private final RecommendationsRepository repository;
 
     public TopUpOverFiftyThousandRuleService(RecommendationsRepository repository) {

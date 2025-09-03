@@ -13,8 +13,17 @@ import java.util.UUID;
 
 @Component
 public class InvestRuleSetService implements RecommendationRuleSetService {
+
+    private static final UUID INVEST_PRODUCT_ID = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
+    private static final String TITLE = "Invest 500";
+    private static final String DESCRIPTION = """
+            Откройте свой путь к успеху с индивидуальным инвестиционным счетом (ИИС) от нашего банка!
+            Воспользуйтесь налоговыми льготами и начните инвестировать с умом. Пополните счет до конца года
+            и получите выгоду в виде вычета на взнос в следующем налоговом периоде. Не упустите возможность
+            разнообразить свой портфель, снизить риски и следить за актуальными рыночными тенденциями.
+            Откройте ИИС сегодня и станьте ближе к финансовой независимости!""";
+
     private final List<RuleService> rules;
-    private final UUID productId = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
 
     public InvestRuleSetService(
             HasDebitProductRuleService debitRule,
@@ -27,11 +36,9 @@ public class InvestRuleSetService implements RecommendationRuleSetService {
     @Override
     public Optional<RecommendationDto> applyRule(UUID userId) {
         boolean passed = rules.stream().allMatch(rule -> rule.applyRule(userId));
-        if (passed) {
-            return Optional.of(new RecommendationDto(productId, "Invest 500",
-                    "Откройте свой путь к успеху с индивидуальным инвестиционным счетом (ИИС) от нашего банка! Воспользуйтесь налоговыми льготами и начните инвестировать с умом. Пополните счет до конца года и получите выгоду в виде вычета на взнос в следующем налоговом периоде. Не упустите возможность разнообразить свой портфель, снизить риски и следить за актуальными рыночными тенденциями. Откройте ИИС сегодня и станьте ближе к финансовой независимости!"
-            ));
+        if (!passed) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(new RecommendationDto(INVEST_PRODUCT_ID, TITLE, DESCRIPTION));
     }
 }
