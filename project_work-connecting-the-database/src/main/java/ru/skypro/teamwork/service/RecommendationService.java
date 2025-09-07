@@ -24,17 +24,20 @@ public class RecommendationService {
     private final DynamicRuleRepository dynamicRuleRepository;
     private final RecommendationsRepository recommendationsRepository;
     private final UserLookupService userLookupService;
+    private final RuleStatsService ruleStatsService;
 
     public RecommendationService(
             List<RecommendationRuleSetService> ruleSets,
             DynamicRuleRepository dynamicRuleRepository,
             RecommendationsRepository recommendationsRepository,
-            UserLookupService userLookupService
+            UserLookupService userLookupService,
+            RuleStatsService ruleStatsService
     ) {
         this.ruleSets = ruleSets;
         this.dynamicRuleRepository = dynamicRuleRepository;
         this.recommendationsRepository = recommendationsRepository;
         this.userLookupService = userLookupService;
+        this.ruleStatsService = ruleStatsService;
     }
 
     @Transactional
@@ -50,14 +53,16 @@ public class RecommendationService {
             if (rule.getRule() != null) {
                 for (RuleCondition condition : rule.getRule()) {
                     rulePassed &= checkCondition(userId, condition);
+                    if (!rulePassed) break;
                 }
             }
             if (rulePassed) {
                 recommendations.add(new RecommendationDto(
-                        UUID.fromString(rule.getProductId()),
+                        rule.getProductId(),
                         rule.getProductName(),
                         rule.getProductText()
                 ));
+                ruleStatsService.incrementRuleCount(rule.getId());
             }
         }
 

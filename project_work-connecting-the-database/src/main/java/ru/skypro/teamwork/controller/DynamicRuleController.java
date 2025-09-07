@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.teamwork.dto.DynamicRuleDto;
 import ru.skypro.teamwork.dto.DynamicRuleListResponse;
 import ru.skypro.teamwork.dto.DynamicRuleRequest;
+import ru.skypro.teamwork.dto.RuleStatsResponseDto;
 import ru.skypro.teamwork.service.DynamicRuleService;
 
 import java.util.UUID;

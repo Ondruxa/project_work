@@ -4,6 +4,8 @@ import ru.skypro.teamwork.dto.DynamicRuleDto;
 import ru.skypro.teamwork.dto.DynamicRuleListResponse;
 import ru.skypro.teamwork.dto.DynamicRuleRequest;
 
+import java.util.UUID;
+
 public interface DynamicRuleService {
 
     DynamicRuleDto createRule(DynamicRuleRequest request);

@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset vladimirsa:005-create-rule-condition-arguments
+--changeset vladimirsa:003-create-rule-condition-arguments
 CREATE TABLE rule_condition_arguments (
     id UUID PRIMARY KEY,
     rule_condition_id UUID NOT NULL,

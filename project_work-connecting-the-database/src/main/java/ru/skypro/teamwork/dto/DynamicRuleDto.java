@@ -13,11 +13,11 @@ public class DynamicRuleDto {
 
     private UUID id;
 
+    @JsonProperty("product_id")
+    private UUID productId;
+
     @JsonProperty("product_name")
     private String productName;
-
-    @JsonProperty("product_id")
-    private String productId;
 
     @JsonProperty("product_text")
     private String productText;

@@ -13,9 +13,7 @@ import ru.skypro.teamwork.model.RuleConditionArgument;
 import ru.skypro.teamwork.repository.DynamicRuleRepository;
 import ru.skypro.teamwork.service.DynamicRuleService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,13 +45,19 @@ public class DynamicRuleServiceImpl implements DynamicRuleService {
     @Override
     @Transactional
     public void deleteRuleByProductId(String productId) {
-        repository.deleteByProductId(productId);
+        UUID uuid = UUID.fromString(productId);
+        repository.deleteByProductId(uuid);
     }
 
     private DynamicRule buildEntityFromRequest(DynamicRuleRequest request) {
         DynamicRule entity = new DynamicRule();
+        if (request.getProductId() != null && !request.getProductId().isBlank()) {
+            entity.setProductId(UUID.fromString(request.getProductId()));
+        } else {
+            // fallback: временно генерируем productId, чтобы не нарушать NOT NULL
+            entity.setProductId(UUID.randomUUID());
+        }
         entity.setProductName(request.getProductName());
-        entity.setProductId(request.getProductId());
         entity.setProductText(request.getProductText());
         entity.setRule(buildConditions(request.getRule(), entity));
         return entity;
@@ -96,8 +100,8 @@ public class DynamicRuleServiceImpl implements DynamicRuleService {
     private DynamicRuleDto toDto(DynamicRule entity) {
         DynamicRuleDto dto = new DynamicRuleDto();
         dto.setId(entity.getId());
-        dto.setProductName(entity.getProductName());
         dto.setProductId(entity.getProductId());
+        dto.setProductName(entity.getProductName());
         dto.setProductText(entity.getProductText());
         dto.setRule(mapConditions(entity.getRule()));
         return dto;

@@ -1,9 +1,15 @@
 databaseChangeLog:
   - include:
-      file: liquibase/scripts/changelog-create-dynamic-rules.sql
+      file: liquibase/scripts/changelog-001-create-dynamic-rules.sql
   - include:
         file: liquibase/scripts/changelog-002-dynamic-rules-normalize.sql
   - include:
       file: liquibase/scripts/changelog-003-create-rule-condition-arguments.sql
   - include:
         file: liquibase/scripts/changelog-004-delete-column-arguments.sql
+  - include:
+        file: liquibase/scripts/changelog-005-create-rule-stats.sql
+  - include:
+      file: liquibase/scripts/changelog-006-alter-rule-stats.sql
+  - include:
+      file: liquibase/scripts/changelog-007-recreate-rule-stats.sql

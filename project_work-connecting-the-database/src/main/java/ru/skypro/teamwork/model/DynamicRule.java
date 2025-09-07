@@ -22,13 +22,13 @@ public class DynamicRule {
     @ToString.Include
     private UUID id;
 
+    @Column(name = "product_id", nullable = false)
+    @ToString.Include
+    private UUID productId;
+
     @Column(name = "product_name", nullable = false)
     @ToString.Include
     private String productName;
-
-    @Column(name = "product_id", nullable = false)
-    @ToString.Include
-    private String productId;
 
     @Column(name = "product_text", length = 2000)
     @ToString.Include
