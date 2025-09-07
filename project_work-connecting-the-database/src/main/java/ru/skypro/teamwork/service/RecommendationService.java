@@ -1,5 +1,6 @@
 package ru.skypro.teamwork.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.teamwork.dto.RecommendationDto;
 import ru.skypro.teamwork.dto.RecommendationListDto;
 import ru.skypro.teamwork.model.DynamicRule;
@@ -36,6 +37,7 @@ public class RecommendationService {
         this.userLookupService = userLookupService;
     }
 
+    @Transactional
     public RecommendationListDto getRecommendations(UUID userId) {
         List<RecommendationDto> recommendations = ruleSets.stream()
                 .map(ruleSet -> ruleSet.applyRule(userId))
