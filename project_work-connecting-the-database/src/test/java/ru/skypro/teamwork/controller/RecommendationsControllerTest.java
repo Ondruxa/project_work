@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.skypro.teamwork.dto.RecommendationDto;
 import ru.skypro.teamwork.dto.RecommendationListDto;
 import ru.skypro.teamwork.service.RecommendationService;
+import ru.skypro.teamwork.service.UserLookupService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -28,13 +29,15 @@ public class RecommendationsControllerTest {
     @Mock
     private RecommendationService recommendationService;
 
+    @Mock
+    private UserLookupService userLookupService; // новый зависимый сервис контроллера
+
     @InjectMocks
     private RecommendationsController recommendationsController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
         mockMvc = MockMvcBuilders.standaloneSetup(recommendationsController).build();
     }
 
@@ -53,11 +56,13 @@ public class RecommendationsControllerTest {
         );
 
         when(recommendationService.getRecommendations(userId))
-                .thenReturn(new RecommendationListDto(userId, List.of(dto1, dto2)));
+                .thenReturn(new RecommendationListDto(userId, "Иван", "Иванов", List.of(dto1, dto2)));
 
-        mockMvc.perform(get("/recommendation/{userId}", userId))
+        mockMvc.perform(get("/recommendation/userid/{userId}", userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(userId.toString()))
+                .andExpect(jsonPath("$.firstName").value("Иван"))
+                .andExpect(jsonPath("$.lastName").value("Иванов"))
                 .andExpect(jsonPath("$.recommendations.length()").value(2));
     }
 
@@ -66,18 +71,18 @@ public class RecommendationsControllerTest {
         UUID userId = UUID.randomUUID();
 
         Mockito.when(recommendationService.getRecommendations(userId))
-                .thenReturn(new RecommendationListDto(userId, List.of()));
+                .thenReturn(new RecommendationListDto(userId, "Петр", "Петров", List.of()));
 
-        mockMvc.perform(get("/recommendation/{userId}", userId))
+        mockMvc.perform(get("/recommendation/userid/{userId}", userId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.recommendations").isEmpty());
+                .andExpect(jsonPath("$.recommendations").isEmpty())
+                .andExpect(jsonPath("$.firstName").value("Петр"))
+                .andExpect(jsonPath("$.lastName").value("Петров"));
     }
 
     @Test
     void getRecommendations_ShouldReturn400_WhenInvalidUserIdFormat() throws Exception {
-        mockMvc.perform(get("/recommendation/{userId}", "invalid-uuid-format"))
+        mockMvc.perform(get("/recommendation/userid/{userId}", "invalid-uuid-format"))
                 .andExpect(status().isBadRequest());
     }
-
-
 }

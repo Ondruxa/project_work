@@ -4,7 +4,6 @@ package ru.skypro.teamwork.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.engine.discovery.UriSelector;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skypro.teamwork.dto.RecommendationDto;
@@ -37,17 +36,22 @@ public class RecommendationServiceTest {
     private DynamicRuleRepository dynamicRuleRepository;
     @Mock
     private RecommendationsRepository recommendationsRepository;
+    @Mock
+    private UserLookupService userLookupService; // новый зависимый сервис
+    @Mock
+    private RuleStatsService ruleStatsService;   // новый зависимый сервис
 
     private RecommendationService recommendationService;
 
 
     @BeforeEach
     void setUp() {
-
         recommendationService = new RecommendationService(
                 List.of(ruleSet1, ruleSet2),
                 dynamicRuleRepository,
-                recommendationsRepository);
+                recommendationsRepository,
+                userLookupService,
+                ruleStatsService);
     }
 
     @Test
@@ -122,7 +126,9 @@ public class RecommendationServiceTest {
     void getRecommendations_ShouldHandleEmptyRuleSets() {
         RecommendationService emptyService = new RecommendationService(Collections.emptyList(),
                 dynamicRuleRepository,
-                recommendationsRepository);
+                recommendationsRepository,
+                userLookupService,
+                ruleStatsService);
         UUID userId = UUID.randomUUID();
         when(dynamicRuleRepository.findAll()).thenReturn(Collections.emptyList());
 
@@ -147,9 +153,8 @@ public class RecommendationServiceTest {
         when(ruleSet1.applyRule(userId)).thenReturn(Optional.of(recommendation1));
         when(ruleSet2.applyRule(userId)).thenReturn(Optional.of(recommendation2));
 
-        // Создаем mock динамического правила
         DynamicRule dynamicRule = new DynamicRule();
-        dynamicRule.setProductId(dynamicProductId.toString());
+        dynamicRule.setProductId(dynamicProductId); // исправлено
         dynamicRule.setProductName("Динамический продукт");
         dynamicRule.setProductText("Описание динамического продукта");
 
@@ -190,7 +195,7 @@ public class RecommendationServiceTest {
         when(ruleSet2.applyRule(userId)).thenReturn(Optional.empty());
 
         DynamicRule dynamicRule = new DynamicRule();
-        dynamicRule.setProductId(UUID.randomUUID().toString());
+        dynamicRule.setProductId(UUID.randomUUID()); // исправлено
         dynamicRule.setProductName("Динамический продукт");
         dynamicRule.setProductText("Рекомендации к динамическому продукту");
 
@@ -224,9 +229,8 @@ public class RecommendationServiceTest {
         when(ruleSet1.applyRule(userId)).thenReturn(Optional.empty());
         when(ruleSet2.applyRule(userId)).thenReturn(Optional.empty());
 
-        //динамическое правило с несколькими условиями
         DynamicRule dynamicRule = new DynamicRule();
-        dynamicRule.setProductId(dynamicProductId.toString());
+        dynamicRule.setProductId(dynamicProductId); // исправлено
         dynamicRule.setProductName("Универсальный продукт");
         dynamicRule.setProductText("Описание универсального продукта");
 
