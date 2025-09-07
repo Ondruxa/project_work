@@ -119,4 +119,18 @@ public class RecommendationsRepository {
             return sum != null ? sum : 0;
         });
     }
+
+    public void clearCaches() {
+        debitProductCache.invalidateAll();
+        noInvestProductCache.invalidateAll();
+        savingTopUpOverThousandCache.invalidateAll();
+        randomTransactionAmountCache.invalidateAll();
+        topUpOverFiftyThousandCache.invalidateAll();
+        debitTopUpGreaterThanSpendCache.invalidateAll();
+        noCreditProductCache.invalidateAll();
+        debitSpendOverHundredThousandCache.invalidateAll();
+        productTypeCache.invalidateAll();
+        activeProductTypeCache.invalidateAll();
+        transactionSumCache.invalidateAll();
+    }
 }
