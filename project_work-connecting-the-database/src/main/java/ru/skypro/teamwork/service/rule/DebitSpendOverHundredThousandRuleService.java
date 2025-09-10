@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import ru.skypro.teamwork.repository.RecommendationsRepository;
 import java.util.UUID;
 
+/**
+ * Правило: сумма расходов по дебетовым операциям пользователя превышает 100 000.
+ * Используется для определения дополнительной рекомендации (например,
+ * предложения по кэшбэку или инвестиционным продуктам).
+ */
 @Component
 public class DebitSpendOverHundredThousandRuleService implements RuleService {
 
@@ -16,6 +21,12 @@ public class DebitSpendOverHundredThousandRuleService implements RuleService {
         this.repository = repository;
     }
 
+    /**
+     * Проверяет, превысили ли расходы по дебетовым операциям порог 100 000.
+     *
+     * @param userId идентификатор пользователя
+     * @return true если условие выполнено, иначе false; при ошибке возвращает false и пишет в лог
+     */
     @Override
     public boolean applyRule(UUID userId) {
         try {
@@ -23,8 +34,6 @@ public class DebitSpendOverHundredThousandRuleService implements RuleService {
         } catch (Exception e) {
             logger.error("Ошибка при проверке правила для пользователя {}: {}", userId, e.getMessage(), e);
             return false;
-
-            //return repository.debitSpendOverHundredThousand(userId);
         }
     }
 }

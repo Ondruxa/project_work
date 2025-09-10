@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * DTO агрегированной статистики по всем правилам.
+ * <p>
+ * Содержит коллекцию отдельных элементов статистики {@link RuleStatsItemDto}.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

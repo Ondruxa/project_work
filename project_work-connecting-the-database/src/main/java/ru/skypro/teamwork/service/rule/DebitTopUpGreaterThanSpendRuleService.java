@@ -8,7 +8,11 @@ import ru.skypro.teamwork.repository.RecommendationsRepository;
 
 import java.util.UUID;
 
-
+/**
+ * Правило: общая сумма пополнений на дебетовые продукты больше общей суммы расходов.
+ * Используется для выявления пользователей с положительным денежным потоком
+ * по дебетовым операциям, что может влиять на рекомендации (вклады, инвестиции и т.п.).
+ */
 @Component
 public class DebitTopUpGreaterThanSpendRuleService implements RuleService {
 
@@ -19,6 +23,12 @@ public class DebitTopUpGreaterThanSpendRuleService implements RuleService {
         this.repository = repository;
     }
 
+    /**
+     * Проверяет, превышает ли сумма пополнений сумму расходов для пользователя.
+     *
+     * @param userId идентификатор пользователя
+     * @return true если пополнения больше расходов; false при отсутствии данных или ошибке
+     */
     @Override
     public boolean applyRule(UUID userId) {
         try {
@@ -27,7 +37,6 @@ public class DebitTopUpGreaterThanSpendRuleService implements RuleService {
             logger.error("Ошибка при проверке пополнения/расходов пользователя {}: {}",
                     userId, e.getMessage(), e);
             return false;
-            //return repository.debitTopUpGreaterThanDebitSpend(userId);
         }
     }
 }

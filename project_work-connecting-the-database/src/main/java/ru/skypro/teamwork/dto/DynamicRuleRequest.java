@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Запрос на создание/обновление динамического правила.
+ * Используется в POST /rule для приёма данных от клиента.
+ */
 @Getter
 @Setter
 public class DynamicRuleRequest {

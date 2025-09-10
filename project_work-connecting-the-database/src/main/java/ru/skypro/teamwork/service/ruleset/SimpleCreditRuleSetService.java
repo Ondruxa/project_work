@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Набор правил для предложения простого кредитного продукта.
+ * Условия включают:
+ * 1) У пользователя нет кредитных продуктов
+ * 2) Пополнения по дебету превышают расходы
+ * 3) Расходы по дебету превышают фиксированный порог (100 000)
+ */
 @Component
 public class SimpleCreditRuleSetService implements RecommendationRuleSetService {
 
@@ -35,6 +42,11 @@ public class SimpleCreditRuleSetService implements RecommendationRuleSetService 
         this.rules = List.of(noCreditRule, debitTopUpGreaterThanSpendRule, debitSpendOverHundredThousandRule);
     }
 
+    /**
+     * Применяет набор кредитных правил. Все условия должны быть выполнены.
+     * @param userId идентификатор пользователя
+     * @return рекомендация кредитного продукта при успехе
+     */
     @Override
     public Optional<RecommendationDto> applyRule(UUID userId) {
         boolean passed = rules.stream().allMatch(rule -> rule.applyRule(userId));

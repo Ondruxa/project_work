@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Набор правил для рекомендации накопительного (сберегательного) продукта «Top Saving».
+ * Условия включают:
+ * 1) Пользователь имеет дебетовый продукт
+ * 2) У пользователя есть существенные пополнения (операции > 50 000)
+ * 3) Пополнения по дебету в целом превышают расходы
+ */
 @Component
 public class TopSavingRuleSetService implements RecommendationRuleSetService {
 
@@ -34,6 +41,11 @@ public class TopSavingRuleSetService implements RecommendationRuleSetService {
         this.rules = List.of(debitRule, topUpOverFiftyThousandRule, debitTopUpGreaterThanSpendRule);
     }
 
+    /**
+     * Применяет набор правил и формирует рекомендацию продукта «Top Saving».
+     * @param userId идентификатор пользователя
+     * @return рекомендация при успешном прохождении правил или пусто
+     */
     @Override
     public Optional<RecommendationDto> applyRule(UUID userId) {
         boolean passed = rules.stream().allMatch(r -> r.applyRule(userId));

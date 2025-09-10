@@ -5,6 +5,10 @@ import lombok.Getter;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO списка рекомендаций конкретному пользователю.
+ * Содержит идентификатор и ФИО пользователя, а также защищённый неизменяемый список рекомендаций.
+ */
 @Getter
 public class RecommendationListDto {
 

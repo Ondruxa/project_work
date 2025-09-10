@@ -14,6 +14,13 @@ import org.springframework.stereotype.Service;
 import ru.skypro.teamwork.dto.RecommendationDto;
 import ru.skypro.teamwork.dto.RecommendationListDto;
 
+/**
+ * Telegram‑бот для получения рекомендаций по командам пользователя.
+ * Поддерживает команды:
+ * /start — показать справку
+ * /recommend <username> — вывести список рекомендаций.
+ * Использует RecommendationService и UserLookupService для получения данных.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +34,9 @@ public class RecommendationTelegramBotService {
 
     private TelegramBot bot;
 
+    /**
+     * Инициализирует Telegram‑бота и подписывается на получение апдейтов.
+     */
     @PostConstruct
     public void init() {
         bot = new TelegramBot(botToken);
@@ -43,6 +53,9 @@ public class RecommendationTelegramBotService {
         log.info("Telegram bot started");
     }
 
+    /**
+     * Корректно останавливает бота перед завершением приложения.
+     */
     @PreDestroy
     public void shutdown() {
         if (bot != null) {
@@ -51,6 +64,12 @@ public class RecommendationTelegramBotService {
         }
     }
 
+    /**
+     * Обрабатывает входящее обновление Telegram: парсит текст команды, валидирует параметры
+     * и инициирует отправку рекомендаций. Игнорирует неподдерживаемые сообщения.
+     *
+     * @param update объект обновления Telegram (может быть null)
+     */
     private void handleUpdate(Update update) {
         if (update == null) return;
         Message msg = update.message();
@@ -97,6 +116,12 @@ public class RecommendationTelegramBotService {
                 }, () -> sendSafe(msg.chat().id(), "Пользователь не найден"));
     }
 
+    /**
+     * Безопасно отправляет текстовое сообщение в чат, логируя исключения без проброса.
+     *
+     * @param chatId идентификатор чата
+     * @param text текст сообщения
+     */
     private void sendSafe(Long chatId, String text) {
         try {
             bot.execute(new SendMessage(chatId, text));

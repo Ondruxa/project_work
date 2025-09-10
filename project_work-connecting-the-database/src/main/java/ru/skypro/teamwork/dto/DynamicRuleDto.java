@@ -7,6 +7,11 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO представление динамического правила рекомендации.
+ * Содержит идентификаторы продукта и описание набора условий (rule),
+ * которые должны быть выполнены для рекомендации продукта пользователю.
+ */
 @Getter
 @Setter
 public class DynamicRuleDto {

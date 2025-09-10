@@ -6,6 +6,12 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сущность отдельного условия динамического правила.
+ * <p>
+ * Содержит текст запроса (query), флаг negate,
+ * ссылку на родительское правило {@link DynamicRule} и список аргументов {@link RuleConditionArgument}.
+ */
 @Entity
 @Table(name = "rule_conditions")
 @Getter

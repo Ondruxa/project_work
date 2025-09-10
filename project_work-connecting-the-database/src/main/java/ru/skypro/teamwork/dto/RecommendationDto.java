@@ -9,6 +9,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RecommendationDto {
 
+/**
+ * DTO отдельной рекомендации продукта пользователю.
+ * Содержит идентификатор продукта и текстовые поля (title, description) для отображения.
+ */
     private final UUID productId;
     private final String title;
     private final String description;

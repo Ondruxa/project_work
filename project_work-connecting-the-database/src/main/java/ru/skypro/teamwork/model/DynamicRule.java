@@ -6,6 +6,13 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сущность динамического правила рекомендации продукта.
+ * <p>
+ * Правило связано с конкретным продуктом (productId, productName) и содержит
+ * текстовое описание (productText) и набор условий {@link RuleCondition},
+ * которые должны быть выполнены, чтобы продукт был рекомендован.
+ */
 @Entity
 @Table(name = "dynamic_rules")
 @Getter

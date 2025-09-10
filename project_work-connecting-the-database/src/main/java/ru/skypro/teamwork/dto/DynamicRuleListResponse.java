@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Обёртка для списка динамических правил.
+ * Используется для единообразного формата ответа REST API.
+ */
 @Getter
 @Setter
 public class DynamicRuleListResponse {

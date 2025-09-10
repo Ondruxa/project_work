@@ -16,12 +16,23 @@ import ru.skypro.teamwork.service.DynamicRuleService;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация сервиса управления динамическими правилами.
+ * Позволяет создавать, получать и удалять правила, а также конвертировать их между
+ * сущностями доменной модели и DTO для API.
+ */
 @Service
 @RequiredArgsConstructor
 public class DynamicRuleServiceImpl implements DynamicRuleService {
 
     private final DynamicRuleRepository repository;
 
+    /**
+     * Создаёт новое динамическое правило на основе входящего запроса.
+     *
+     * @param request описание продукта и набора условий
+     * @return созданное правило в DTO-представлении
+     */
     @Override
     @Transactional
     public DynamicRuleDto createRule(DynamicRuleRequest request) {
@@ -30,6 +41,11 @@ public class DynamicRuleServiceImpl implements DynamicRuleService {
         return toDto(saved);
     }
 
+    /**
+     * Возвращает список всех сохранённых динамических правил.
+     *
+     * @return обёртка с коллекцией DTO правил
+     */
     @Override
     @Transactional(readOnly = true)
     public DynamicRuleListResponse getAllRules() {
@@ -42,6 +58,11 @@ public class DynamicRuleServiceImpl implements DynamicRuleService {
         return resp;
     }
 
+    /**
+     * Удаляет правило по идентификатору продукта.
+     *
+     * @param productId строковый UUID продукта
+     */
     @Override
     @Transactional
     public void deleteRuleByProductId(String productId) {

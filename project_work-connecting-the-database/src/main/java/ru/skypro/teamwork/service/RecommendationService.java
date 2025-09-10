@@ -17,6 +17,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис формирования списка рекомендаций для пользователя.
+ * Комбинирует результаты статических наборов правил (rule set) и динамических правил,
+ * сохранённых в базе. Для прошедших правил создаёт DTO рекомендаций и учитывает статистику.
+ */
 @Service
 public class RecommendationService {
 
@@ -40,6 +45,16 @@ public class RecommendationService {
         this.ruleStatsService = ruleStatsService;
     }
 
+    /**
+     * Формирует список рекомендаций для указанного пользователя, последовательно:
+     * 1) Применяет все наборы правил (rule sets)
+     * 2) Применяет каждое динамическое правило, проверяя его условия
+     * 3) Инкрементирует статистику для сработавших динамических правил
+     * 4) Обогащает результат данными пользователя (ФИО)
+     *
+     * @param userId идентификатор пользователя
+     * @return DTO со списком рекомендаций и данными пользователя
+     */
     @Transactional
     public RecommendationListDto getRecommendations(UUID userId) {
         List<RecommendationDto> recommendations = ruleSets.stream()

@@ -5,6 +5,13 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Аргумент условия правила.
+ * <p>
+ * Хранит конкретное строковое значение (argument), используемое при параметризации
+ * Несколько аргументов связаны с одним
+ * условием правила через внешний ключ rule_condition_id.
+ */
 @Entity
 @Table(name = "rule_condition_arguments")
 @Getter

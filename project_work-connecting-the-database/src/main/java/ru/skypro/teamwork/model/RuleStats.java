@@ -5,6 +5,11 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Статистика срабатываний динамического правила.
+ * <p>
+ * Отражает количество (count) активных срабатываний для конкретного правила (ruleId).
+ */
 @Entity
 @Table(name = "rule_stats")
 @Getter
@@ -25,6 +30,12 @@ public class RuleStats {
     @Column(name = "rule_id", nullable = false, unique = true)
     private UUID ruleId;
 
+    /**
+     * Метод создания новой статистики для правила с начальным значением count=0.
+     *
+     * @param ruleId идентификатор правила
+     * @return новый объект статистики
+     */
     public static RuleStats create(UUID ruleId) {
         RuleStats rs = new RuleStats();
         rs.ruleId = ruleId;

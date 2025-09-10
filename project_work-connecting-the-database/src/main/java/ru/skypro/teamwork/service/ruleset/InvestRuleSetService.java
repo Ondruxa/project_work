@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Набор правил для рекомендации инвестиционного продукта (ИИС / Invest 500).
+ * Правила включают:
+ * 1) Пользователь имеет дебетовый продукт
+ * 2) Пользователь ещё не имеет инвестиционных продуктов
+ * 3) Пользователь активно пополняет накопительные продукты (порог > 1000)
+ */
 @Component
 public class InvestRuleSetService implements RecommendationRuleSetService {
 
@@ -33,6 +40,11 @@ public class InvestRuleSetService implements RecommendationRuleSetService {
         this.rules = List.of(debitRule, noInvestRule, savingRule);
     }
 
+    /**
+     * Применяет все правила набора для конкретного пользователя.
+     * @param userId идентификатор пользователя
+     * @return рекомендация инвест‑продукта при успешном прохождении всех условий
+     */
     @Override
     public Optional<RecommendationDto> applyRule(UUID userId) {
         boolean passed = rules.stream().allMatch(rule -> rule.applyRule(userId));
